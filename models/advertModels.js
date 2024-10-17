@@ -1,29 +1,33 @@
 import { Schema, model } from "mongoose";
+import { toJSON } from "@reis/mongoose-to-json";
 
-const advertSchema = new Schema({
-  title: {
-    type: String,
-    required: true,
+const advertSchema = new Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+    description: {
+      type: String,
+      required: true,
+    },
+    user: {
+      type: String,
+      // ref: "user  Types.ObjectId",
+    },
+    img: {
+      type: String,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
   },
-  description: {
-    type: String,
-    required: true,
-  },
-  user: {
-    type: Types.ObjectId,
-    ref: "user",
-  },
-  img: {
-    type: String,
-  },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-});
+  {
+    timestamps: true, 
+  }
+);
 
-export const advertModel = model("advert", advertSchema)
+advertSchema.plugin(toJSON);
+
+export const advertModel = model("advert", advertSchema);
