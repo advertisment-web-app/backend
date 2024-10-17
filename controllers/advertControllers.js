@@ -1,6 +1,7 @@
 import { advertModel } from "../models/advertModels.js";
 import { addAdvertValidators } from "../validators/advertValidators.js";
 
+// adding an advert by a vendor
 export const addAdvert = async (req, res, next) => {
   try {
     const { error, value } = addAdvertValidators.validate(req.body);
@@ -14,6 +15,7 @@ export const addAdvert = async (req, res, next) => {
   }
 };
 
+// Retrieving all advert by a vendor
 export const getAllAdvert = async (req, res, next) => {
   try {
     const { filter = "{}", limit = 10, skip = 0 } = req.query;
@@ -27,6 +29,7 @@ export const getAllAdvert = async (req, res, next) => {
   }
 };
 
+// Retrieving an advert by an id
 export const getAdevert = async (req, res, next) => {
   try {
     const advertId = await advertModel.findById(req.params.id);
@@ -34,6 +37,38 @@ export const getAdevert = async (req, res, next) => {
       res.status(404).json("No book found");
     }
     res.status(200).json(advertId);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Updating a vendors advert
+
+export const updateAdvert = async (req, res, next) => {
+  try {
+    const updatedAdvert = await advertModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+    if (!updatedAdvert) {
+      res.status(404).json("Update wasn't successful");
+    }
+    res.status(200).json(updatedAdvert);
+  } catch (error) {
+    next(error);
+  }
+};
+
+// Deleting a vendors advert
+
+export const deleteAdvert = async (req, res, next) => {
+  try {
+    const deletedAdvert = await advertModel.findByIdAndDelete(req.params.id);
+    if (!deletedAdvert) {
+      res.status(404).json("Nothing to delete");
+    }
+    res.status(200).json("Deleted Successfully");
   } catch (error) {
     next(error);
   }
