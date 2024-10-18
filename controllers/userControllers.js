@@ -64,20 +64,22 @@ export const userLogin = async (req, res, next) => {
 };
 
 export const getProfile = (req, res, next) => {
-    try {
-        const user = userModel.findById(req.params.id).select({
-            password: false
-        });
-        res.status(200).json(user)
-    } catch (error) {
-        next(error)
-    }
-}
+  try {
+    const user = userModel.findById(req.params.id).select({
+      password: false,
+    });
+    res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
 
 export const userLogout = (req, res, next) => {
-    try {
-        res.json("Log Out successful")
-    } catch (error) {
-        next(error)
-    }
-}
+  try {
+    res.json("Log Out successful");
+  } catch (error) {
+    next(error);
+  }
+};
+
+// controllers for update and delete profile

@@ -7,15 +7,15 @@ import {
   updateAdvert,
 } from "../controllers/advertControllers.js";
 
-import { isAuthenticated } from "../middlewares/auth.js";
+import { hasPermissions, isAuthenticated } from "../middlewares/auth.js";
 
 const advertRouter = Router();
 
-advertRouter.post("/ad",isAuthenticated, addAdvert);
-advertRouter.get("/getallad", isAuthenticated, getAllAdvert);
-advertRouter.get("/getad/:id", isAuthenticated, getAdevert);
-advertRouter.patch("/updatead/:id", isAuthenticated, updateAdvert);
-advertRouter.delete("/deletedad/:id", isAuthenticated, deleteAdvert);
+advertRouter.post("/ad",isAuthenticated, hasPermissions("add_advert"), addAdvert);
+advertRouter.get("/getallad", isAuthenticated, hasPermissions("viewall_advert"), getAllAdvert);
+advertRouter.get("/getad/:id", isAuthenticated, hasPermissions("view_advert"), getAdevert);
+advertRouter.patch("/updatead/:id", isAuthenticated, hasPermissions("update_advert"), updateAdvert);
+advertRouter.delete("/deletedad/:id", isAuthenticated, hasPermissions("delete_advert"), deleteAdvert);
 
 
 export default advertRouter;
