@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
 import { toJSON } from "@reis/mongoose-to-json";
 
 const advertSchema = new Schema(
@@ -12,8 +12,27 @@ const advertSchema = new Schema(
       required: true,
     },
     user: {
+      type: Types.ObjectId,
+      ref: "User",
+    },
+    category: {
       type: String,
-      // ref: "user  Types.ObjectId",
+      enum: [
+        "clothing and accessories",
+        "Electronics and gadgets",
+        "Home and living",
+        "Beauty and personal care",
+        "Handmade and Craft Items",
+        "Toys and games",
+        "Books and Stationary",
+        "Sports and Outdoor",
+        "Automotive",
+        "Health and fitness",
+        "Food and Beverages",
+        "Art and collectibles",
+        "Digital Product",
+        "Services",
+      ],
     },
     img: {
       type: String,
@@ -24,7 +43,7 @@ const advertSchema = new Schema(
     },
   },
   {
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

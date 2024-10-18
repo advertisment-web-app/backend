@@ -15,7 +15,7 @@ export const addAdvert = async (req, res, next) => {
   }
 };
 
-// Retrieving all advert by a vendor
+// Retrieving all advert by a vendor (both vendor and a user)
 export const getAllAdvert = async (req, res, next) => {
   try {
     const { filter = "{}", limit = 10, skip = 0 } = req.query;
@@ -29,7 +29,7 @@ export const getAllAdvert = async (req, res, next) => {
   }
 };
 
-// Retrieving an advert by an id
+// Retrieving an advert by an id (both vendor and a user)
 export const getAdevert = async (req, res, next) => {
   try {
     const advertId = await advertModel.findById(req.params.id);
@@ -42,7 +42,7 @@ export const getAdevert = async (req, res, next) => {
   }
 };
 
-// Updating a vendors advert
+// Updating a vendor's advert
 
 export const updateAdvert = async (req, res, next) => {
   try {
@@ -60,7 +60,7 @@ export const updateAdvert = async (req, res, next) => {
   }
 };
 
-// Deleting a vendors advert
+// Deleting a vendor's advert
 
 export const deleteAdvert = async (req, res, next) => {
   try {
