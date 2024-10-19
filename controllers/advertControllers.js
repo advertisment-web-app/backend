@@ -36,7 +36,7 @@ export const getAdevert = async (req, res, next) => {
     if (!advertId) {
       return res.status(404).json("No advert found");
     }
-      return res.status(200).json(advertId);
+    return res.status(200).json(advertId);
   } catch (error) {
     next(error);
   }
