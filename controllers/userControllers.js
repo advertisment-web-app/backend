@@ -63,9 +63,9 @@ export const userLogin = async (req, res, next) => {
   }
 };
 
-export const getProfile = (req, res, next) => {
+export const getProfile = async (req, res, next) => {
   try {
-    const user = userModel.findById(req.params.id).select({
+    const user = await userModel.findById(req.auth.id).select({
       password: false,
     });
     res.status(200).json(user);
@@ -83,3 +83,30 @@ export const userLogout = (req, res, next) => {
 };
 
 // controllers for update and delete profile
+export const deleteUserProfile = async (req, res, next) => {
+  try {
+    const deleteUser = await userModel.findByIdAndDelete(req.auth.id);
+    if (!deleteUser) {
+      res.status(404).json("No user to delete");
+    }
+    res.status(200).json("User deleted");
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateUserProfile = async (req, res, next) => {
+  try {
+    const updateUserProfile = await userModel.findByIdAndUpdate(
+      req.auth.id,
+      req.body,
+      { new: true }
+    );
+    if (!updateUserProfile) {
+      res.status(404).json("Unable to update");
+    }
+    res.status(200).json("Details updated succesfully");
+  } catch (error) {
+    next(error);
+  }
+};

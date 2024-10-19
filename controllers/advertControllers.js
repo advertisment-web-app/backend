@@ -34,9 +34,9 @@ export const getAdevert = async (req, res, next) => {
   try {
     const advertId = await advertModel.findById(req.params.id);
     if (!advertId) {
-      res.status(404).json("No book found");
+      return res.status(404).json("No advert found");
     }
-    res.status(200).json(advertId);
+      return res.status(200).json(advertId);
   } catch (error) {
     next(error);
   }
@@ -52,9 +52,9 @@ export const updateAdvert = async (req, res, next) => {
       { new: true }
     );
     if (!updatedAdvert) {
-      res.status(404).json("Update wasn't successful");
+      return res.status(404).json("Update wasn't successful");
     }
-    res.status(200).json(updatedAdvert);
+    return res.status(200).json(updatedAdvert);
   } catch (error) {
     next(error);
   }
