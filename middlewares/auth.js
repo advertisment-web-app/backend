@@ -11,6 +11,9 @@ export const hasPermissions = (action) => {
   return async (req, res, next) => {
     try {
       const user = await userModel.findById(req.auth.id);
+      if (!user) {
+        return res.status(404).json("User Not Found");
+      }
       const permission = permissions.find((value) => value.role === user.role);
       if (!permission) {
         res.status(404).json("You are not authorized here");

@@ -8,7 +8,10 @@ export const addAdvert = async (req, res, next) => {
     if (error) {
       return res.status(422).json(error);
     }
-    const newAdvert = await advertModel.create(value);
+    const newAdvert = await advertModel.create({
+      ...value,
+      user: req.auth.id,
+    });
     res.status(201).json(newAdvert);
   } catch (error) {
     next(error);
@@ -17,9 +20,10 @@ export const addAdvert = async (req, res, next) => {
 // Retrieving all advert by a vendor (both vendor and a user)
 export const getAllAdvert = async (req, res, next) => {
   try {
-    const { filter = "{}", limit = 10, skip = 0 } = req.query;
+    const { filter = "{}", sort = "{}", limit = 10, skip = 0 } = req.query;
     const advert = await advertModel
       .find(JSON.parse(filter))
+      .sort(JSON.parse(filter))
       .limit(limit)
       .skip(skip);
     res.status(200).json(advert);
@@ -45,9 +49,8 @@ export const getAdevert = async (req, res, next) => {
 
 export const updateAdvert = async (req, res, next) => {
   try {
-    const updatedAdvert = await advertModel.findByIdAndUpdate(
-      req.params.id,
-      req.body,
+    const updatedAdvert = await advertModel.findOneAndUpdate(
+      { _id: req.params.id, user: req.auth.id },
       { new: true }
     );
     if (!updatedAdvert) {
@@ -63,7 +66,10 @@ export const updateAdvert = async (req, res, next) => {
 
 export const deleteAdvert = async (req, res, next) => {
   try {
-    const deletedAdvert = await advertModel.findByIdAndDelete(req.params.id);
+    const deletedAdvert = await advertModel.findOneAndDelete({
+      _id: req.params.id,
+      user: req.auth.id,
+    });
     if (!deletedAdvert) {
       res.status(404).json("Nothing to delete");
     }
