@@ -23,7 +23,7 @@ export const getAllAdvert = async (req, res, next) => {
     const { filter = "{}", sort = "{}", limit = 10, skip = 0 } = req.query;
     const advert = await advertModel
       .find(JSON.parse(filter))
-      .sort(JSON.parse(filter))
+      .sort(JSON.parse(sort))
       .limit(limit)
       .skip(skip);
     res.status(200).json(advert);
