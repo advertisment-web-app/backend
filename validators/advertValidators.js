@@ -3,7 +3,7 @@ import Joi from "joi";
 export const addAdvertValidators = Joi.object({
   title: Joi.string().required(),
   description: Joi.string().required(),
-  user: Joi.string().optional(), // Assuming it's an ObjectId as string
+  user: Joi.string().optional(),
   category: Joi.string()
     .valid(
       "clothing and accessories",

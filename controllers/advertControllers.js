@@ -14,7 +14,6 @@ export const addAdvert = async (req, res, next) => {
     next(error);
   }
 };
-
 // Retrieving all advert by a vendor (both vendor and a user)
 export const getAllAdvert = async (req, res, next) => {
   try {
