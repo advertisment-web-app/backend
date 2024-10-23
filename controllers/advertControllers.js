@@ -51,8 +51,10 @@ export const updateAdvert = async (req, res, next) => {
   try {
     const updatedAdvert = await advertModel.findOneAndUpdate(
       { _id: req.params.id, user: req.auth.id },
+      { ...req.body},
       { new: true }
     );
+    // console.log(updatedAdvert)
     if (!updatedAdvert) {
       return res.status(404).json("Update wasn't successful");
     }
