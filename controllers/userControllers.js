@@ -5,6 +5,7 @@ import {
 } from "../validators/userValidators.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import { advertModel } from "../models/advertModels.js";
 
 export const userRegister = async (req, res, next) => {
   try {
@@ -48,7 +49,7 @@ export const userLogin = async (req, res, next) => {
     // check for validity of a password
     const corrctPassword = bcrypt.compare(value.password, user.password);
     if (!corrctPassword) {
-      res.status(404).json("Invalid Credentials");
+      res.status(409).json("Invalid Credentials");
     }
     // Now generate a token for the person
     const token = jwt.sign({ id: user.id }, process.env.JWT_PRIVATE_KEY, {
@@ -69,6 +70,23 @@ export const getProfile = async (req, res, next) => {
       password: false,
     });
     res.status(200).json(user);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserAdverts = async (req, res, next) => {
+  try {
+    const { filter = "{}", sort = "{}", limit = 10, skip = 0 } = req.query;
+    const advert = await advertModel
+      .find({
+        ...JSON.parse(filter),
+        user: req.auth.id
+      })
+      .sort(JSON.parse(sort))
+      .limit(limit)
+      .skip(skip);
+    res.status(200).json(advert);
   } catch (error) {
     next(error);
   }
