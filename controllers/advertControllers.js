@@ -4,7 +4,10 @@ import { addAdvertValidators } from "../validators/advertValidators.js";
 // adding an advert by a vendor
 export const addAdvert = async (req, res, next) => {
   try {
-    const { error, value } = addAdvertValidators.validate(req.body);
+    const { error, value } = addAdvertValidators.validate({
+      ...req.body,
+      img: req.file?.filename,
+    });
     if (error) {
       return res.status(422).json(error);
     }
@@ -51,7 +54,7 @@ export const updateAdvert = async (req, res, next) => {
   try {
     const updatedAdvert = await advertModel.findOneAndUpdate(
       { _id: req.params.id, user: req.auth.id },
-      { ...req.body},
+      { ...req.body },
       { new: true }
     );
     // console.log(updatedAdvert)
