@@ -54,7 +54,7 @@ export const updateAdvert = async (req, res, next) => {
   try {
     const updatedAdvert = await advertModel.findOneAndUpdate(
       { _id: req.params.id, user: req.auth.id },
-      { ...req.body },
+      { ...req.body, img: req.filename?.filename },
       { new: true }
     );
     // console.log(updatedAdvert)
