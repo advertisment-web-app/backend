@@ -23,7 +23,7 @@ export const addAdvert = async (req, res, next) => {
 // Retrieving all advert by a vendor (both vendor and a user)
 export const getAllAdvert = async (req, res, next) => {
   try {
-    const { filter = "{}", sort = "{}", limit = 10, skip = 0 } = req.query;
+    const { filter = "{}", sort = "{}", limit = 100, skip = 0 } = req.query;
     const advert = await advertModel
       .find(JSON.parse(filter))
       .sort(JSON.parse(sort))
