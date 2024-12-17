@@ -18,7 +18,7 @@ export const userRegister = async (req, res, next) => {
     // Checking the database if the email already exist
     const user = await userModel.findOne({ email: value.email });
     if (user) {
-      res.status(200).json("User Already exist");
+      res.status(409).json("User Already exist");
     }
     const hashedPassword = bcrypt.hashSync(value.password, 10);
     // save to database
@@ -28,7 +28,7 @@ export const userRegister = async (req, res, next) => {
     });
     // send user an email for confirmation
     // Response
-    res.status(200).json("User Successfully registered");
+    res.status(201).json("User Successfully registered");
   } catch (error) {
     next(error);
   }
@@ -49,7 +49,7 @@ export const userLogin = async (req, res, next) => {
     // check for validity of a password
     const corrctPassword = bcrypt.compare(value.password, user.password);
     if (!corrctPassword) {
-      res.status(409).json("Invalid Credentials");
+      res.status(404).json("Invalid Credentials");
     }
     // Now generate a token for the person
     const token = jwt.sign({ id: user.id }, process.env.JWT_PRIVATE_KEY, {
@@ -77,7 +77,7 @@ export const getProfile = async (req, res, next) => {
 
 export const getUserAdverts = async (req, res, next) => {
   try {
-    const { filter = "{}", sort = "{}", limit = 10, skip = 0 } = req.query;
+    const { filter = "{ }", sort = "{ }", limit = 10, skip = 0 } = req.query;
     const advert = await advertModel
       .find({
         ...JSON.parse(filter),
@@ -86,7 +86,7 @@ export const getUserAdverts = async (req, res, next) => {
       .sort(JSON.parse(sort))
       .limit(limit)
       .skip(skip);
-    res.status(200).json(advert);
+    return res.status(200).json(advert);
   } catch (error) {
     next(error);
   }
